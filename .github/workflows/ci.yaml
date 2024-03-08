@@ -1,0 +1,32 @@
+name: PHP
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu20.04
+    env:
+      PHP_VERSION: 8.2
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install composer
+        run: composer install
+
+      - name: Set up PHP ${{ env.PHP_VERSION }}
+        uses: php-actions/composer@v6
+        with:
+          PHP-version: ${{ env.PHP_VERSION }}
+          version: 1
+
+      - name: Test
+        run: composer test-all
+
+      - name: Linter
+        run: composer lint-code
