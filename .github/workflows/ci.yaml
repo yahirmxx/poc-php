@@ -1,0 +1,41 @@
+name: Go
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu20.4
+    env:
+      PHP_VERSION: 8.2
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install composer
+        run: composer install
+
+      - name: Set up PHP ${{ env.PHP_VERSION }}
+        uses: php-actions/composer@v6
+        with:
+          PHP-version: ${{ env.PHP_VERSION }}
+          version: 1
+
+      - name: Test
+        run: composer test-all
+
+      - name: Linter
+        run: composer lint-code
+
+      - name: Notify on success
+        if: success()
+        uses: rtCamp/action-slack-notify@v2
+        with:
+          status: 'passed'
+          text: 'PHP CI Successfully'
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
