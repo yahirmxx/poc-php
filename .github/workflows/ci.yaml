@@ -30,12 +30,3 @@ jobs:
 
       - name: Linter
         run: composer lint-code
-
-      - name: Notify on success
-        if: success()
-        uses: rtCamp/action-slack-notify@v2
-        with:
-          status: 'passed'
-          text: 'PHP CI Successfully'
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
