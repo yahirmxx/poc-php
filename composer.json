@@ -29,8 +29,8 @@
         }
     },
     "scripts": {
-        "test": "phpunit",
-        "lint": "phpcs"
+        "test-all": "phpunit tests",
+        "lint-code": "phpcs ."
     },
     "config": {
         "sort-packages": true
